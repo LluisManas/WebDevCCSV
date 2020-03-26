@@ -36,21 +36,22 @@ class App extends React.Component {
     darkMode: false
   };
 
-  //In order to display all the products we need to use this lifecycle..
+  // #1. In order to get all the products I use this lifecycle
   componentDidMount() {
     this.getData();
-    this.setState({ inputSphere: 0, cylinder: 0, addition: 0 });
   }
 
   getData() {
-    console.log(result.data);
     this.setState({
-      results: result.data
+      results: result.data,
+      inputSphere: 0,
+      cylinder: 0,
+      addition: 0
     });
   }
 
   findResults = (inputSphere, cylinder, addition) => {
-    //filter the results that match with the values passed
+    //#2. Filter the results that match with the values passed
     let filteredResults = result.data.filter(result => {
       if (
         result.minSphere <= this.state.inputSphere &&
@@ -65,19 +66,16 @@ class App extends React.Component {
     });
 
     this.setState({ results: filteredResults });
-    console.log("Holiiii", filteredResults);
   };
 
   onSearch = e => {
-    //when this function gets activated, it triggers the findResult function in order to filter the results
+    //#3. When clicking on the "Search" button, it triggers the findResult function in order to filter the results.
 
-    //this.onChange(); Do I need this?
     this.findResults();
     e.preventDefault();
   };
   onChange = (key, value) => {
     this.setState({ [key]: value });
-    console.log({ [key]: value });
   };
   toggledarkMode = () => {
     this.setState({
@@ -86,6 +84,7 @@ class App extends React.Component {
   };
   render() {
     const { darkMode, inputSphere, results, cylinder, addition } = this.state;
+    //#4. Adding the "cylinder" and "addition" search values.
     return (
       <ThemeProvider theme={theme}>
         <div className={darkMode ? "AppDark" : "AppLight"}>
@@ -96,6 +95,7 @@ class App extends React.Component {
               label="Sphere"
               onChange={this.onChange}
             />
+
             <InputField
               inputField={cylinder}
               name="cylinder"
@@ -108,10 +108,7 @@ class App extends React.Component {
               label="addition"
               onChange={this.onChange}
             />
-            <SearchButton
-              onSearch={this.onSearch}
-              findResults={this.findResults}
-            />
+            <SearchButton onSearch={this.onSearch} />
           </Grid>
           <Grid className={darkMode ? "serchResult" : "serchResultLight"}>
             <ShowResults results={results} />
